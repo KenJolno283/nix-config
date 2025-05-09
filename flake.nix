@@ -87,6 +87,7 @@
           # > Our main home-manager configuration file <
           ./home-manager/home.nix
           nvf.homeManagerModules.default
+          inputs.nvf.homeManagerModules.default
         ];
       };
     };
