@@ -14,7 +14,6 @@
     overlays = [
       outputs.overlays.additions
       outputs.overlays.modifications
-      outputs.overlays.unstable-packages
     ];
     config = {
       allowUnfree = true;
@@ -43,9 +42,15 @@
 
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";
+
+  # enable sound with pipewire
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   ### Nvidia drive ###
@@ -81,13 +86,84 @@
   };
 
   ### substituters ###
-  nix.settings = {
-    substituters = [
-      "https://mirror.tuna.tsinghua.edu.cn/nix-channels/store"
-      "https://cache.nixos.org/"
-    ];
+  #settings = {
+  #  substituters = [
+  #    "https://mirror.tuna.tsinghua.edu.cn/nix-channels/store"
+  #    "https://cache.nixos.org/"
+  #  ];
+  #};
+
+  environment.systemPackages = with pkgs; [
+    nixd
+    brave
+    vim
+    wget
+    git
+    neofetch
+    curl
+    tree
+    unzip
+    dae
+
+    # hyprland
+    waybar
+    rofi-wayland
+    mako
+    libnotify # for mako
+    kitty # terminal
+    swww
+
+    # waybar attribute override
+    #(waybar.overrideAttrs (oldAttr: {
+     # mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+    #}))
+  ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
+
+  services.xserver.enable = true;
+  services.displayManager.sddm.enable = true;
+  #services.desktopManager.plasma6.enable = true;
+
+  ### hyprland ###
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    #WLR_NO_HARDWARE_CURSORS = "1";  # if cursor disappears
+  };
+
+  fonts = {
+    packages = with pkgs; [
+	# icon fonts
+	material-design-icons
+
+	# normal fonts
+	noto-fonts
+	noto-fonts-cjk-sans
+	noto-fonts-emoji
+
+	# nerd fonts
+	nerd-fonts.jetbrains-mono
+    ];
+
+    enableDefaultPackages = false; # use fonts defined by user
+
+    # user defined fonts
+    fontconfig.defaultFonts = {
+	serif = ["Noto Serif" "Noto Color Emoji"];
+	sansSerif = ["Noto Sans" "Noto Color Emoji"];
+	monospace = ["JetBrainsMono Nerd Font" "Noto Color Emoji"];
+	emoji = ["Noto Color Emoji"];
+    };
+  };
 
 
 
@@ -101,7 +177,7 @@
       home = "/home/KenJolno";
       description = "KenJolno";
       openssh.authorizedKeys.keys = [
-        QglmcEd2plxiiGH/G7ffj5dPrcKFI1ac/PTwamBARAs KenJolno@nixos
+        SHA256:QglmcEd2plxiiGH/G7ffj5dPrcKFI1ac/PTwamBARAs
       ];
       extraGroups = ["wheel" "networkmanager"];
     };

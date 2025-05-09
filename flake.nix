@@ -4,7 +4,6 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -16,6 +15,12 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
+
+    # nvf
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -23,12 +28,17 @@
     nixpkgs,
     home-manager,
     hyprland,
+    nvf,
     ...
   } @ inputs: let
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
+      "aarch64-linux"
+      "i686-linux"
       "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
     ];
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
@@ -71,6 +81,7 @@
         modules = [
           # > Our main home-manager configuration file <
           ./home-manager/home.nix
+          nvf.homeManagerModules.default
         ];
       };
     };
