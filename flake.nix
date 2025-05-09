@@ -16,6 +16,9 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    # dae
+    daeuniverse.url = "github:daeuniverse/flake.nix";
+
     # nvf
     nvf = {
       url = "github:notashelf/nvf";
@@ -68,6 +71,8 @@
         modules = [
           # > Our main nixos configuration file <
           ./nixos/configuration.nix
+          inputs.daeuniverse.nixosModules.dae
+          inputs.home-manager.nixosModules.default
         ];
       };
     };

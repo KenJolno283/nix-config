@@ -8,6 +8,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
   ];
 
   nixpkgs = {
@@ -53,6 +54,14 @@
     jack.enable = true;
   };
 
+  ### home manager ###
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      "KenJolno" = import ../home-manager/home.nix;
+    };
+  };
+
   ### Nvidia drive ###
   hardware.graphics = {
     enable = true;
@@ -80,7 +89,7 @@
     enable = true;
     configFile = "/etc/dae/Config.dae";
     assets = with pkgs; [
-	v2ray-geoip
+	#v2ray-geoip
 	v2ray-domain-list-community
     ];
   };
@@ -112,6 +121,7 @@
     libnotify # for mako
     kitty # terminal
     swww
+    networkmanagerapplet
 
     # waybar attribute override
     #(waybar.overrideAttrs (oldAttr: {
