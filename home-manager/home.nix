@@ -10,6 +10,7 @@
 }: {
   # You can import other home-manager modules here
   imports = [
+    ./catppuccin.nix
     ../modules/home-manager
   ];
 
@@ -29,6 +30,14 @@
   };
 
   programs.neovim.enable = true;
+
+  # Enable GTK & QT
+  gtk.enable = true;
+  qt = {
+    enable = true;
+    platformTheme.name = "kvantum";
+    style.name = "kvantum";
+  };
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

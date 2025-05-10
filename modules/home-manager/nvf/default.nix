@@ -1,6 +1,10 @@
 { pkgs, inputs, ... }:
 
 {
+  imports = [
+    ./nvf-configuration.nix
+  ];
+
   programs.nvf = {
     enable = true;
     settings = {

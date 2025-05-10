@@ -60,6 +60,7 @@
     users = {
       "KenJolno" = import ../home-manager/home.nix;
     };
+    backupFileExtension = "backup";
   };
 
   ### Nvidia drive ###
@@ -87,11 +88,22 @@
   ### dae ###
   services.dae = {
     enable = true;
-    configFile = "/etc/dae/Config.dae";
+    configFile = "/etc/dae/config.dae";
     assets = with pkgs; [
-	#v2ray-geoip
+	v2ray-geoip
 	v2ray-domain-list-community
     ];
+  };
+
+  programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
+    };
+    gamemode.enable = true;
   };
 
   ### substituters ###
@@ -113,6 +125,7 @@
     tree
     unzip
     dae
+    ranger
 
     # hyprland
     waybar
@@ -122,6 +135,7 @@
     kitty # terminal
     swww
     networkmanagerapplet
+    hypridle
 
     # waybar attribute override
     #(waybar.overrideAttrs (oldAttr: {
@@ -138,6 +152,7 @@
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   #services.desktopManager.plasma6.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   ### hyprland ###
   programs.hyprland = {

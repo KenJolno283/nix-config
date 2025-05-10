@@ -24,6 +24,9 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # catppuccin
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs = {
@@ -32,6 +35,7 @@
     home-manager,
     hyprland,
     nvf,
+    catppuccin,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -73,6 +77,8 @@
           ./nixos/configuration.nix
           inputs.daeuniverse.nixosModules.dae
           inputs.home-manager.nixosModules.default
+          inputs.catppuccin.nixosModules.catppuccin
+          inputs.home-manager.nixosModules.home-manager
         ];
       };
     };
@@ -87,7 +93,7 @@
           # > Our main home-manager configuration file <
           ./home-manager/home.nix
           nvf.homeManagerModules.default
-          inputs.nvf.homeManagerModules.default
+          catppuccin.homeModules.catppuccin
         ];
       };
     };
